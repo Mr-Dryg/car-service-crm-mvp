@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+frontend/node_modules
+bin
+*.exe
+.env
+.env.local
+docs
