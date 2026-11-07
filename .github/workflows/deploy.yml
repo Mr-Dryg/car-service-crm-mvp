@@ -13,6 +13,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
+          command_timeout: 30m
           script: |
             set -eu
             REPO=/opt/car-service-crm-mvp

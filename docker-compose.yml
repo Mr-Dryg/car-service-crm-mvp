@@ -1,7 +1,24 @@
 services:
+  app:
+    build: .
+    image: sto-crm:local
+    container_name: sto-crm-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: "8080"
+      DATABASE_URL: postgres://user:password@db:5432/sto_crm?sslmode=disable
+      JWT_SECRET: change-me-in-production-secret-key
+      SEED_DEMO_DATA: "true"
+    ports:
+      - "8080:8080"
+
   db:
     image: postgres:16
     container_name: sto-crm-db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
