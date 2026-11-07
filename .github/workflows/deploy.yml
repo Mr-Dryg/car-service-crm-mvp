@@ -1,0 +1,31 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script_stop: true
+          script: |
+            set -eu
+            REPO=/opt/car-service-crm-mvp
+            AUTH=https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+            ORIGIN=https://github.com/${{ github.repository }}.git
+            if [ ! -d "$REPO/.git" ]; then
+              mkdir -p /opt
+              git clone "$AUTH" "$REPO"
+            else
+              git -C "$REPO" remote set-url origin "$AUTH"
+              git -C "$REPO" pull --ff-only
+            fi
+            git -C "$REPO" remote set-url origin "$ORIGIN"
+            cd "$REPO"
+            docker compose up -d --build
