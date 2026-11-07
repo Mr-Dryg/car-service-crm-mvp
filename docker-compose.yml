@@ -15,6 +15,20 @@ services:
     ports:
       - "8080:8080"
 
+  tls:
+    build: ./deploy/tls-proxy
+    image: sto-crm-tls:local
+    container_name: sto-crm-tls
+    restart: unless-stopped
+    depends_on:
+      - app
+    environment:
+      TLS_SAN: "IP:185.239.142.94,DNS:localhost"
+    ports:
+      - "8443:8443"
+    volumes:
+      - sto_crm_tls:/etc/nginx/certs
+
   db:
     image: postgres:16
     container_name: sto-crm-db
@@ -35,3 +49,4 @@ services:
 
 volumes:
   sto_crm_pgdata:
+  sto_crm_tls:
