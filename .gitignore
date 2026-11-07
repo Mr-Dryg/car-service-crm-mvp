@@ -1,0 +1,23 @@
+# Бинарники
+bin/
+*.exe
+*.dll
+*.so
+
+# Node
+node_modules/
+npm-debug.log*
+.vite/
+
+# Сборка фронтенда
+backend/internal/webui/dist/assets/
+backend/internal/webui/dist/notify.wav
+
+# Локальное окружение
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp

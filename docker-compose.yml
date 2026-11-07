@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: sto-crm-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sto_crm
+    ports:
+      - "5432:5432"
+    volumes:
+      - sto_crm_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d sto_crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  sto_crm_pgdata:
